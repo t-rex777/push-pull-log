@@ -1,4 +1,6 @@
+import { DEFAULT_EXERCISE } from "@/constants/default";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useBlocker } from "@tanstack/react-router";
 import { Dumbbell, PlusCircle } from "lucide-react";
 import { memo, useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -6,17 +8,6 @@ import { z } from "zod";
 import { ExerciseTable } from "./exerciseTable";
 import { Button } from "./ui/button";
 import { Form } from "./ui/form";
-
-const DEFAULT_SET = {
-	completed: false,
-	reps: 0,
-	weight: 0,
-};
-
-const DEFAULT_EXERCISE = {
-	name: "",
-	sets: [DEFAULT_SET],
-};
 
 const formSchema = z.object({
 	exercises: z.array(
@@ -49,6 +40,20 @@ const WorkoutTable = memo((): JSX.Element => {
 					],
 				},
 			],
+		},
+	});
+
+	// prevents the user from accidentally leaving the page
+	useBlocker({
+		shouldBlockFn: () => {
+			if (form.formState.isDirty) {
+				return false;
+			}
+
+			// todo: add it back
+			return false;
+			// const shouldLeave = confirm("Are you sure you want to leave?");
+			// return !shouldLeave;
 		},
 	});
 

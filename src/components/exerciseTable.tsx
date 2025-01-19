@@ -1,7 +1,10 @@
+import { DEFAULT_SET } from "@/constants/default";
 import clsx from "clsx";
-import { memo } from "react";
+import { PlusCircle } from "lucide-react";
+import { memo, useCallback } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { ExerciseName } from "./exerciseName";
+import { Button } from "./ui/button";
 import { WorkoutRow } from "./workoutRow";
 
 interface IExerciseTableProps {
@@ -29,10 +32,14 @@ const ExerciseTable = memo(
 	({ index }: IExerciseTableProps): JSX.Element | null => {
 		const form = useFormContext();
 
-		const { fields: sets } = useFieldArray({
+		const { fields: sets, append } = useFieldArray({
 			control: form.control,
 			name: `exercises.${index}.sets`,
 		});
+
+		const handleAddSet = useCallback(() => {
+			append(DEFAULT_SET);
+		}, [append]);
 
 		return (
 			<div className="space-y-4">
@@ -59,18 +66,22 @@ const ExerciseTable = memo(
 								/>
 							))}
 
-							{/* <tr>
-								<td />
-								<td />
-								<td />
-								<td />
-								<td className="flex items-center justify-end">
-									<Button variant="outline" type="button">
+							<tr>
+								<td className="flex items-center justify-start">
+									<Button
+										variant="outline"
+										type="button"
+										onClick={handleAddSet}
+									>
 										<PlusCircle />
 										Add Set
 									</Button>
 								</td>
-							</tr> */}
+								<td />
+								<td />
+								<td />
+								<td />
+							</tr>
 						</tbody>
 					</table>
 				</div>

@@ -14,6 +14,8 @@ function RootComponent() {
 			<main className="flex-1 pb-16">
 				<Outlet />
 			</main>
+
+			{/* todo: hide bottom nav when workout is started */}
 			<BottomNav />
 			{/* <TanStackRouterDevtools position="top-right" /> */}
 		</div>
