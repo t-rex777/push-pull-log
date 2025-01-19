@@ -1,3 +1,14 @@
+name: Deploy PWA to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # or your default branch name
+  workflow_dispatch:  # Allows manual trigger
+
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -6,23 +17,31 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Ensure full history is fetched for accurate changes detection
+          fetch-depth: 0
 
-      # Set up Bun
       - name: Set up Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      # Install dependencies and build
-      - name: Install Dependencies and Build
-        run: |
-          bun install
-          bun run build
+      - name: Install Dependencies
+        run: bun install
         env:
-          CI: true # Ensure Bun treats this as a CI build
+          CI: true
 
-      # Prevent errors from uncommitted changes
+      - name: Build
+        run: bun run build
+        env:
+          CI: true
+          BASE_URL: '/${{ github.event.repository.name }}'  # For correct asset paths in GitHub Pages
+
+      # Configure PWA assets
+      - name: Configure PWA
+        run: |
+          cp dist/manifest.webmanifest dist/manifest.json || true
+          cp -r public/* dist/ || true
+
+      # Reset Git Changes
       - name: Reset Git Changes
         run: |
           git reset --hard HEAD
@@ -32,5 +51,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  
           publish_dir: ./dist
+          force_orphan: true  # Keep only latest commit in gh-pages branch
+          enable_jekyll: false
