@@ -13,5 +13,7 @@ export interface IControlledInputProps {
 	name: string;
 	placeholder?: string;
 	readOnly?: boolean;
+	className?: string;
 	onChange?: FormEventHandler<HTMLButtonElement> | undefined;
+	onBlur?: FormEventHandler<HTMLButtonElement> | undefined;
 }
