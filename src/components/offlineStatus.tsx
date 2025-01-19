@@ -20,11 +20,9 @@ export const OfflineStatus = () => {
 	return (
 		<div
 			className={clsx(
-				"fixed top-4 right-4 p-2 rounded",
+				"fixed top-1 right-1 p-1 rounded",
 				isOnline ? "bg-green-500" : "bg-red-500",
 			)}
-		>
-			{isOnline ? "Online" : "Offline"}
-		</div>
+		/>
 	);
 };

@@ -1,7 +1,6 @@
 import { BottomNav } from "@/components/bottomNav";
 import { OfflineStatus } from "@/components/offlineStatus";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 export const Route = createRootRoute({
 	component: RootComponent,
@@ -16,7 +15,7 @@ function RootComponent() {
 				<Outlet />
 			</main>
 			<BottomNav />
-			<TanStackRouterDevtools position="top-right" />
+			{/* <TanStackRouterDevtools position="top-right" /> */}
 		</div>
 	);
 }
