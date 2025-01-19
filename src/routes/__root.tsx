@@ -1,4 +1,5 @@
 import { BottomNav } from "@/components/bottomNav";
+import { OfflineStatus } from "@/components/offlineStatus";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
@@ -9,6 +10,8 @@ export const Route = createRootRoute({
 function RootComponent() {
 	return (
 		<div className="flex min-h-screen flex-col bg-black text-white">
+			<OfflineStatus />
+
 			<main className="flex-1 pb-16">
 				<Outlet />
 			</main>

@@ -8,9 +8,9 @@ const routes = [
 		href: "/",
 	},
 	{
-		label: "Workouts",
+		label: "New Workout",
 		icon: Dumbbell,
-		href: "/workouts",
+		href: "/new",
 	},
 	{
 		label: "Profile",

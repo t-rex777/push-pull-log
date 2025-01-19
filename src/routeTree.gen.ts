@@ -11,13 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as workoutNewImport } from './routes/(workout)/new'
+import { Route as ProfileImport } from './routes/profile'
+import { Route as NewImport } from './routes/new'
+import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const workoutNewRoute = workoutNewImport.update({
-  id: '/(workout)/new',
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NewRoute = NewImport.update({
+  id: '/new',
   path: '/new',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -25,11 +39,25 @@ const workoutNewRoute = workoutNewImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(workout)/new': {
-      id: '/(workout)/new'
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/new': {
+      id: '/new'
       path: '/new'
       fullPath: '/new'
-      preLoaderRoute: typeof workoutNewImport
+      preLoaderRoute: typeof NewImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
   }
@@ -38,33 +66,43 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/new': typeof workoutNewRoute
+  '/': typeof IndexRoute
+  '/new': typeof NewRoute
+  '/profile': typeof ProfileRoute
 }
 
 export interface FileRoutesByTo {
-  '/new': typeof workoutNewRoute
+  '/': typeof IndexRoute
+  '/new': typeof NewRoute
+  '/profile': typeof ProfileRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/(workout)/new': typeof workoutNewRoute
+  '/': typeof IndexRoute
+  '/new': typeof NewRoute
+  '/profile': typeof ProfileRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/new'
+  fullPaths: '/' | '/new' | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/new'
-  id: '__root__' | '/(workout)/new'
+  to: '/' | '/new' | '/profile'
+  id: '__root__' | '/' | '/new' | '/profile'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  workoutNewRoute: typeof workoutNewRoute
+  IndexRoute: typeof IndexRoute
+  NewRoute: typeof NewRoute
+  ProfileRoute: typeof ProfileRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  workoutNewRoute: workoutNewRoute,
+  IndexRoute: IndexRoute,
+  NewRoute: NewRoute,
+  ProfileRoute: ProfileRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +115,19 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/(workout)/new"
+        "/",
+        "/new",
+        "/profile"
       ]
     },
-    "/(workout)/new": {
-      "filePath": "(workout)/new.tsx"
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/new": {
+      "filePath": "new.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     }
   }
 }
